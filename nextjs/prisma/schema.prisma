@@ -489,5 +489,35 @@ model session {
   status       String    @default("draft") @db.VarChar(255)
   date_created DateTime? @db.Timestamptz(6)
   date_updated DateTime? @db.Timestamptz(6)
+  session_id   String    @unique(map: "session_session_id_unique") @db.Uuid
+
+  @@index([session_id], map: "session_session_id_index")
+}
+
+model Chunks {
+  id           Int       @id @default(autoincrement())
+  status       String    @default("draft") @db.VarChar(255)
+  date_created DateTime? @db.Timestamptz(6)
+  start_time   String?   @db.VarChar(255)
   session_id   String?   @db.Uuid
+  chunk_number Int?
+  is_processed Boolean?  @default(false)
+}
+
+model user {
+  id            Int       @id @default(autoincrement())
+  status        String    @default("draft") @db.VarChar(255)
+  date_created  DateTime? @db.Timestamptz(6)
+  date_updated  DateTime? @db.Timestamptz(6)
+  access_token  String?   @db.VarChar(255)
+  token_type    String?   @db.VarChar(255)
+  id_token      String?
+  expiry_date   BigInt?
+  scope         String?
+  refresh_token String?
+  name          String?   @db.VarChar(255)
+  email         String?   @db.VarChar(255)
+  picture       String?   @db.VarChar(255)
+  userId        String?   @db.VarChar(255)
+  interviuId    String?   @db.Uuid
 }

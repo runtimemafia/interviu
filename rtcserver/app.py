@@ -4,9 +4,13 @@ from fastapi import HTTPException
 import os
 from pathlib import Path
 from fastapi import Form, File, UploadFile
-from pydantic import BaseModel
+from pydantic import BaseModel, FilePath
+import json
+import datetime
+from pazworker import annotate_video
 
 app = FastAPI(title="Simple Video Upload Service")
+app.openapi_schema = None
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,6 +31,7 @@ def healthcheck():
 async def upload_chunk(
     sessionId: str = Form(...),
     chunkNumber: int = Form(...),
+    startTime: int = Form(...),
     metadata: str = Form(None),
     video: UploadFile = File(...),
 ):
@@ -37,7 +42,7 @@ async def upload_chunk(
     
     # Determine file extension from content type or use default
     extension = "mp4"  # Default extension
-    if video.content_type == "video/webm":
+    if video.content_type.startswith("video/webm"):
         extension = "webm"
     
     # Define the path for the chunk file
@@ -55,12 +60,71 @@ async def upload_chunk(
             with open(metadata_path, "w") as f:
                 f.write(metadata)
         
-        return {
-            "status": "success",
-            "sessionId": sessionId,
+        # Create chunk data dictionary
+        chunk_data = {
             "chunkNumber": chunkNumber,
+            "startTime": startTime,
             "filePath": str(chunk_path),
-            "fileType": extension
+            "contentType": video.content_type,
+            "fileName": video.filename
         }
+        
+        # Path to the data.json file
+        data_json_path = session_dir / "data.json"
+        
+        # Load existing data if file exists, or create empty list
+        if data_json_path.exists():
+            with open(data_json_path, "r") as f:
+                chunks_data = json.load(f)
+        else:
+            chunks_data = []
+        
+        # Add new chunk data and save back to data.json
+        chunks_data.append(chunk_data)
+        
+        with open(data_json_path, "w") as f:
+            json.dump(chunks_data, f, indent=2)
+
+            
+        return {"message": "Chunk uploaded successfully", "chunkNumber": chunkNumber, "filePath": str(chunk_path)}
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error saving file: {str(e)}")
+
+
+class SessionRequest(BaseModel):
+    sessionId: str
+
+@app.post("/process-session")
+async def process_session(request: SessionRequest):
+    # session_id = request.sessionId
+    session_id = "36043983-a756-4074-a08b-f3f7344be432"
+    session_dir = f"uploads/{session_id}"
+    
+    # Check if the session directory exists
+    if not os.path.exists(session_dir):
+        raise HTTPException(status_code=404, detail=f"Session {session_id} not found")
+    
+    # Create the output directory
+    output_dir = f"{session_dir}/annotated"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Find all video chunks in the session directory
+    chunks = []
+    for file in os.listdir(session_dir):
+        if file.startswith("chunk_") and (file.endswith(".webm") or file.endswith(".mp4")):
+            chunks.append(file)
+    
+    if not chunks:
+        raise HTTPException(status_code=404, detail=f"No video chunks found for session {session_id}")
+    
+    # Process the first chunk as a demonstration
+    # In a full implementation, you might want to process all chunks
+    input_file = f"{session_dir}/{chunks[0]}"
+    output_file = f"{output_dir}/{chunks[0]}"
+    
+    # Start the video processing
+    await annotate_video(input_file, output_file)
+    
+    print(f"Processing session {request.sessionId}")
+    return {"message": f"Processing session {session_id}", "processingFile": input_file}

@@ -1,0 +1,23 @@
+[
+  {
+    "chunkNumber": 1,
+    "startTime": 1741334592981,
+    "filePath": "uploads/36043983-a756-4074-a08b-f3f7344be432/chunk_1.webm",
+    "contentType": "video/webm;codecs=vp9,opus",
+    "fileName": "recording-36043983-a756-4074-a08b-f3f7344be432-chunk1-2025-03-07T08:03:22.984Z.webm"
+  },
+  {
+    "chunkNumber": 2,
+    "startTime": 1741334602985,
+    "filePath": "uploads/36043983-a756-4074-a08b-f3f7344be432/chunk_2.webm",
+    "contentType": "video/webm;codecs=vp9,opus",
+    "fileName": "recording-36043983-a756-4074-a08b-f3f7344be432-chunk2-2025-03-07T08:03:32.984Z.webm"
+  },
+  {
+    "chunkNumber": 3,
+    "startTime": 1741334612986,
+    "filePath": "uploads/36043983-a756-4074-a08b-f3f7344be432/chunk_3.webm",
+    "contentType": "video/webm;codecs=vp9,opus",
+    "fileName": "recording-36043983-a756-4074-a08b-f3f7344be432-chunk3-2025-03-07T08:03:38.611Z.webm"
+  }
+]
