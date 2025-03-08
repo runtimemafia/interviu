@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       </div>
       <div className="w-full flex flex-col items-center">
         <div className="
-        flex flex-col w-[70em]
+        flex flex-col w-[70em] max-w-full px-4
         ">{children}</div>
       </div>
     </div>

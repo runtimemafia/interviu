@@ -289,10 +289,13 @@ const Recorder = () => {
         formData.append("startTimeISO", new Date(startTime).toISOString());
 
         // Replace with your actual API endpoint
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/upload-chunk`, {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/upload-chunk`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           throw new Error(
@@ -371,7 +374,7 @@ const Recorder = () => {
       <div>
         <video
           ref={videoRef}
-          className="bg-black w-[35em] h-[20em] my-[1em] rounded-xl"
+          className="bg-black w-[35em] h-[20em] rounded-xl"
           muted
           autoPlay
           playsInline
@@ -384,7 +387,7 @@ const Recorder = () => {
             isRecording
               ? "bg-[--color-bg-light] hover:bg-[--color-bg-lighter]"
               : "bg-[--color-primary] hover:bg-[--color-primary-light]"
-          } text-white px-4 py-2 rounded-md disabled:bg-[--color-bg-light] disabled:text-gray-400`}
+          } text-white px-4 py-2 mt-4 rounded-md disabled:bg-[--color-bg-light] disabled:text-gray-400`}
         >
           {isRecording ? "Stop Recording" : "Start Recording"}
         </button>
@@ -397,24 +400,12 @@ const Recorder = () => {
             : "Click 'Start Recording' to begin."}
         </div>
 
-        <button
+        {/* <button
           onClick={startProcessing}
           className="bg-[--color-primary] hover:bg-[--color-primary-light] px-4 py-2  rounded-md my-2 mt-6 text-white"
         >
           Start Processing
-        </button>
-
-        {isRecording && (
-          <div className="mt-2 p-3 bg-slate-700 border border-slate-800 rounded text-sm">
-            <p>
-              Saving 10-second video chunks every second. Each chunk contains
-              complete audio and video data.
-            </p>
-            <p className="mt-1">
-              Chunks are automatically downloaded to your Downloads folder.
-            </p>
-          </div>
-        )}
+        </button> */}
       </div>
     </>
   );

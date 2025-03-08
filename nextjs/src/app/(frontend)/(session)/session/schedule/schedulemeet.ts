@@ -1,13 +1,7 @@
 // TODO : Look into this code.
 
-import { calendar_v3, google } from 'googleapis';
-import { OAuth2Client } from 'google-auth-library';
-
-// Configuration for Google OAuth - replace with your actual credentials
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
-const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/auth/callback/google';
-const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+import { calendar_v3, google } from "googleapis";
+import { OAuth2Client } from "google-auth-library";
 
 /**
  * Create an OAuth2 client for Google API authentication
@@ -16,11 +10,11 @@ const SCOPES = ['https://www.googleapis.com/auth/calendar'];
  */
 const getAuthClient = (accessToken: string): OAuth2Client => {
   const oAuth2Client = new google.auth.OAuth2(
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET,
-    GOOGLE_REDIRECT_URI
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URL
   );
-  
+
   oAuth2Client.setCredentials({ access_token: accessToken });
   return oAuth2Client;
 };
@@ -41,75 +35,77 @@ export async function scheduleGoogleMeet(
   endDateTime: string,
   attendeeEmails: string[],
   title: string,
-  description: string = ''
+  description: string = ""
 ) {
   try {
     // Get authenticated client
     const auth = getAuthClient(accessToken);
-    
+
     // Initialize Google Calendar API
-    const calendar = google.calendar({ version: 'v3', auth });
-    
+    const calendar = google.calendar({ version: "v3", auth });
+
     // Format attendees for Google Calendar API
-    const attendees = attendeeEmails.map(email => ({ email }));
-    
+    const attendees = attendeeEmails.map((email) => ({ email }));
+
     // Create event with Google Meet conferencing
     const event: calendar_v3.Schema$Event = {
       summary: title,
       description: description,
       start: {
         dateTime: startDateTime,
-        timeZone: 'UTC', // Consider parameterizing this
+        timeZone: "UTC", // Consider parameterizing this
       },
       end: {
         dateTime: endDateTime,
-        timeZone: 'UTC', // Consider parameterizing this
+        timeZone: "UTC", // Consider parameterizing this
       },
       attendees,
       conferenceData: {
         createRequest: {
           requestId: `meet_${Date.now()}`,
           conferenceSolutionKey: {
-            type: 'hangoutsMeet'
-          }
-        }
-      }
+            type: "hangoutsMeet",
+          },
+        },
+      },
     };
-    
+
     // Insert event to calendar
     const { data } = await calendar.events.insert({
-      calendarId: 'primary',
+      calendarId: "primary",
       conferenceDataVersion: 1, // Required for Google Meet integration
-      requestBody: event
+      requestBody: event,
     });
-    
+
     return {
       success: true,
       eventId: data.id,
       meetLink: data.conferenceData?.entryPoints?.[0]?.uri || null,
-      eventDetails: data
+      eventDetails: data,
     };
   } catch (error) {
-    console.error('Error scheduling Google Meet:', error);
+    console.error("Error scheduling Google Meet:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      error: error instanceof Error ? error.message : "Unknown error occurred",
     };
   }
 }
 
 // Helper function to create a simple scheduled meeting
 export async function createMeeting(
-  accessToken: string, 
-  date: Date, 
+  accessToken: string,
+  date: Date,
   durationMinutes: number = 60,
-  emails: string[], 
+  emails: string[],
   title: string,
   description?: string
 ) {
   const startDateTime = date.toISOString();
-  const endDateTime = new Date(date.getTime() + (durationMinutes * 60000)).toISOString();
-  
+  const endDateTime = new Date(
+    date.getTime() + durationMinutes * 60000
+  ).toISOString();
+
   return await scheduleGoogleMeet(
     accessToken,
     startDateTime,

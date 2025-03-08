@@ -485,11 +485,19 @@ model directus_webhooks {
 }
 
 model session {
-  id           Int       @id @default(autoincrement())
-  status       String    @default("draft") @db.VarChar(255)
-  date_created DateTime? @db.Timestamptz(6)
-  date_updated DateTime? @db.Timestamptz(6)
-  session_id   String    @unique(map: "session_session_id_unique") @db.Uuid
+  id                 Int       @id @default(autoincrement())
+  status             String    @default("draft") @db.VarChar(255)
+  date_created       DateTime? @db.Timestamptz(6)
+  date_updated       DateTime? @db.Timestamptz(6)
+  session_id         String    @unique(map: "session_session_id_unique") @db.Uuid
+  start_time         DateTime? @db.Timestamptz(6)
+  title              String?   @db.VarChar(255)
+  participant_name   String?   @db.VarChar(255)
+  participant_email  String?   @db.VarChar(255)
+  link               String?   @db.VarChar(255)
+  user_interviuId    String?   @db.Uuid
+  scheduled_datetime BigInt?
+  resume_text        String?
 
   @@index([session_id], map: "session_session_id_index")
 }
@@ -519,5 +527,7 @@ model user {
   email         String?   @db.VarChar(255)
   picture       String?   @db.VarChar(255)
   userId        String?   @db.VarChar(255)
-  interviuId    String?   @db.Uuid
+  interviuId    String?   @unique(map: "user_interviuid_unique") @db.Uuid
+
+  @@index([interviuId], map: "user_interviuid_index")
 }
