@@ -1,6 +1,7 @@
 "use client";
 
 import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 interface Interview {
@@ -20,6 +21,7 @@ interface Interview {
 
 const UpcomingInterviews = () => {
   const [interviews, setInterviews] = useState<Interview[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     api
@@ -43,6 +45,7 @@ const UpcomingInterviews = () => {
                 key={interview.id}
                 onClick={() => {
                   window.open(interview.link, "_blank");
+                  router.push(`/session/${interview.session_id}`);
                 }}
                 className="flex items-center justify-between px-4 py-2 border  rounded-md cursor-pointer hover:bg-gray-100"
               >

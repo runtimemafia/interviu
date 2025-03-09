@@ -1,0 +1,16 @@
+[
+  {
+    "chunkNumber": 1,
+    "startTime": 1741484091135,
+    "filePath": "uploads/99bca9ec-b76e-4b75-8d1e-d48251e91a4a/chunk_1.webm",
+    "contentType": "video/webm",
+    "fileName": "recording-99bca9ec-b76e-4b75-8d1e-d48251e91a4a-chunk1-2025-03-09T01:35:01.162Z.webm"
+  },
+  {
+    "chunkNumber": 2,
+    "startTime": 1741484101140,
+    "filePath": "uploads/99bca9ec-b76e-4b75-8d1e-d48251e91a4a/chunk_2.webm",
+    "contentType": "video/webm",
+    "fileName": "recording-99bca9ec-b76e-4b75-8d1e-d48251e91a4a-chunk2-2025-03-09T01:35:06.387Z.webm"
+  }
+]

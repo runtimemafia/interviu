@@ -11,6 +11,8 @@ interface IuseAppStore {
     videoServerHealth: boolean;
     setVideoServerHealth: (serverHealth: boolean) => void;
 
+    
+
 }
 
 const useAppStore = create<IuseAppStore>((set) => ({

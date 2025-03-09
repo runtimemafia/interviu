@@ -1,0 +1,30 @@
+[
+  {
+    "chunkNumber": 1,
+    "startTime": 1741486299434,
+    "filePath": "uploads/28b0a7e8-3ce7-4601-88fa-c27fef95a0ba/chunk_1.webm",
+    "contentType": "video/webm",
+    "fileName": "recording-28b0a7e8-3ce7-4601-88fa-c27fef95a0ba-chunk1-2025-03-09T02:11:49.511Z.webm"
+  },
+  {
+    "chunkNumber": 2,
+    "startTime": 1741486309440,
+    "filePath": "uploads/28b0a7e8-3ce7-4601-88fa-c27fef95a0ba/chunk_2.webm",
+    "contentType": "video/webm",
+    "fileName": "recording-28b0a7e8-3ce7-4601-88fa-c27fef95a0ba-chunk2-2025-03-09T02:11:59.491Z.webm"
+  },
+  {
+    "chunkNumber": 3,
+    "startTime": 1741486319442,
+    "filePath": "uploads/28b0a7e8-3ce7-4601-88fa-c27fef95a0ba/chunk_3.webm",
+    "contentType": "video/webm",
+    "fileName": "recording-28b0a7e8-3ce7-4601-88fa-c27fef95a0ba-chunk3-2025-03-09T02:12:09.517Z.webm"
+  },
+  {
+    "chunkNumber": 4,
+    "startTime": 1741486329439,
+    "filePath": "uploads/28b0a7e8-3ce7-4601-88fa-c27fef95a0ba/chunk_4.webm",
+    "contentType": "video/webm",
+    "fileName": "recording-28b0a7e8-3ce7-4601-88fa-c27fef95a0ba-chunk4-2025-03-09T02:12:14.150Z.webm"
+  }
+]

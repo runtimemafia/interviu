@@ -7,9 +7,12 @@ const Logout = () => {
   const router = useRouter();
 
   try {
-    localStorage.removeItem("token");
-    toast.success("Logout successful");
-    router.push("/login");
+    if(typeof window != "undefined"){
+
+      localStorage.removeItem("token");
+      toast.success("Logout successful");
+      router.push("/login");
+    }
   } catch (e) {
     console.error(e);
     toast.error("Logout failed");
