@@ -1,16 +1,12 @@
-version: '3.8'
+version: '3'
 
 services:
-  api:
+  fastapi_rtcserver:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8002:8000"
+      - "8001:8001"
     volumes:
-      - ./:/app
-    environment:
-      - ENVIRONMENT=development
-      - LOG_LEVEL=debug
-    restart: always
-    container_name: fastapi_rtcserver
+      - ./uploads:/app/uploads
+    restart: unless-stopped
