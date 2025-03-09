@@ -33,7 +33,8 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Then install the rest of the requirements
-RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
+# RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
+RUN pip install --prefer-binary -r requirements.txt
 
 # Copy application code
 COPY . .
@@ -43,4 +44,5 @@ EXPOSE 8000
 
 # Run the application
 # CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
-CMD ["fastapi", "run", "app.py"]
+# CMD ["fastapi", "run", "app.py"]
+CMD ["python", "app.py"]
