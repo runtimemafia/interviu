@@ -32,9 +32,6 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements file first for better layer caching
 COPY requirements.txt .
 
-# Install python-lz4 first to avoid build issues
-RUN pip install --no-cache-dir --prefer-binary python-lz4==4.4.3
-
 # Then install the rest of the requirements
 RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
 
