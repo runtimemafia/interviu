@@ -19,16 +19,30 @@
 # # Command to run the application
 # CMD ["python", "app.py"]
 
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 WORKDIR /app
+
+# Install system dependencies required for building packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file first for better layer caching
 COPY requirements.txt .
 
-# Try to use pre-built wheels when possible
+# Install python-lz4 first to avoid build issues
+RUN pip install --no-cache-dir --prefer-binary python-lz4==4.4.3
+
+# Then install the rest of the requirements
 RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
 
-# Copy the rest of your application
+# Copy application code
 COPY . .
 
-# Command to run the application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8001"]
+# Expose the port your application runs on
+EXPOSE 8000
+
+# Run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

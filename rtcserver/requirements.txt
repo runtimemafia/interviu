@@ -36,7 +36,7 @@ Jinja2==3.1.5
 joblib==1.4.2
 keras==3.9.0
 libclang==18.1.1
-lz4==4.4.3
+python-lz4==4.4.3  # Changed from lz4==4.4.3 to use python-lz4 package
 Markdown==3.7
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
